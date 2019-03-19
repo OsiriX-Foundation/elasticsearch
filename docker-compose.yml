@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+
+  reverse-proxy:
+    image: osirixfoundation/elasticsearch-reverse-proxy:latest
+    container_name: reverseproxy
+    secrets:
+      - privkey1.pem
+      - fullchain1.pem
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${TIME_ZONE}:/etc/timezone:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - elasticsearch
+      - kibana
+    extra_hosts:
+      - "${ROOT_URL}:127.0.0.1"
+      
+      
+      
+      
+secrets:
+  privkey1.pem:
+    file: privkey1.pem
+  fullchain1.pem:
+    file: fullchain1.pem
