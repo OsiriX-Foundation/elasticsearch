@@ -19,6 +19,17 @@ services:
       - kibana
     extra_hosts:
       - "kibana.kheops.online:127.0.0.1"
+  
+  kibana:
+    image: kibana:6.6.2
+    container_name: kibana
+   
+  elasticsearch:
+    image: elasticsearch:6.6.2
+    container_name: elasticsearch
+  environment:
+    - discovery.type=single-node
+   
       
       
       
