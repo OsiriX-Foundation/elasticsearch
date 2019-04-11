@@ -24,7 +24,7 @@ services:
       - "kibana.kheops.online:127.0.0.1"
   
   kibana:
-    image: kibana:6.6.2
+    image: amazon/opendistro-for-elasticsearch-kibana:0.8.0
     container_name: kibana
     volumes:
       - /home/ansible/elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml
@@ -33,7 +33,7 @@ services:
 
    
   elasticsearch:
-    image: elasticsearch:6.6.2
+    image: amazon/opendistro-for-elasticsearch:0.8.0
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
