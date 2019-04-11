@@ -38,7 +38,7 @@ services:
     environment:
       - discovery.type=single-node
     volumes:
-      - esdat01:/usr/share/elasticsearch/data
+      - esdata01:/usr/share/elasticsearch/data
       - /home/ansible/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - "9200:9200"
