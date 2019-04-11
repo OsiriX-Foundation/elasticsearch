@@ -33,7 +33,7 @@ services:
 
    
   elasticsearch:
-    image: amazon/opendistro-for-elasticsearch:0.8.0
+    image: elasticsearch:6.6.2
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
