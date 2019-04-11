@@ -27,6 +27,7 @@ services:
     image: kibana:6.6.2
     container_name: kibana
     volumes:
+      - esdat01:/usr/share/elasticsearch/data
       - /home/ansible/elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - "5601:5601"
