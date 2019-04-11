@@ -14,6 +14,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - KHEOPS_ROOT_SCHEME=https
+      - KHEOPS_ROOT_HOST=kibana.kheops.online
     depends_on:
       - elasticsearch
       - kibana
@@ -23,13 +26,22 @@ services:
   kibana:
     image: kibana:6.6.2
     container_name: kibana
+    volumes:
+      - /home/ansible/elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
+
    
   elasticsearch:
     image: elasticsearch:6.6.2
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-   
+    volumes:
+      - /home/ansible/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - "9200:9200"
+      - "9300:9300"
       
       
       

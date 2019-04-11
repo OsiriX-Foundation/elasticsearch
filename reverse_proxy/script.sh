@@ -2,6 +2,7 @@
 
 missing_env_var_secret=false
 
+
 #Verify secrets
 if ! [ -f ${SECRET_FILE_PATH}/privkey1.pem ]; then
     echo "Missing privkey1.pem secret"
@@ -30,12 +31,6 @@ if [[ -z $KHEOPS_ROOT_HOST ]]; then
 else
    echo -e "environment variable KHEOPS_ROOT_HOST \e[92mOK\e[0m"
 fi
-if [[ -z $KHEOPS_ROOT_HOST ]]; then
-  echo "Missing KHEOPS_ROOT_HOST environment variable"
-  missing_env_var_secret=true
-else
-   echo -e "environment variable KHEOPS_ROOT_HOST \e[92mOK\e[0m"
-fi
 
 
 #if missing env var or secret => exit
@@ -46,7 +41,7 @@ else
 fi
 
 #get env var
-chmod a+w /etc/nginx/conf.d/kheops.conf
+chmod a+w /etc/nginx/conf.d/reverseproxy.conf
 sed -i "s|\${root_url}|$KHEOPS_ROOT_SCHEME://$KHEOPS_ROOT_HOST|" /etc/nginx/conf.d/reverseproxy.conf
 
 sed -i "s|\${server_name}|$KHEOPS_ROOT_HOST|" /etc/nginx/conf.d/reverseproxy.conf
