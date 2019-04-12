@@ -56,4 +56,4 @@ secrets:
   fullchain1.pem:
     file: fullchain1.pem
   pwd:
-    file:pwd
+    file: pwd
