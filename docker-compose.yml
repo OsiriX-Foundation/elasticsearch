@@ -53,7 +53,23 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
-      
+
+  elastalert:
+    image: bitsensor/elastalert:3.0.0-beta.0
+    container_name: elastalert
+    volumes:
+      - ./elastalert/config/elastalert.yaml:/opt/elastalert/config.yaml
+      - ./elastalert/config/elastalert-test.yaml:/opt/elastalert/config-test.yaml
+      - ./elastalert/config/config.json:/opt/elastalert-server/config/config.json
+      - ./elastalert/rules:/opt/elastalert/rules
+      - ./elastalert/rule_templates:/opt/elastalert/rule_templates
+    ports:
+      - "3030:3030"
+      - "3333:3333"
+    depends_on:
+      - elasticsearch
+      - kibana
+  
 volumes:
   esdata01:
     driver: local
