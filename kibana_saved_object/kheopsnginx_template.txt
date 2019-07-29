@@ -1,5 +1,4 @@
-USE: PUT _template/nginx
-
+PUT _template/nginx
 {
     "order" : 0,
     "index_patterns" : [
@@ -60,6 +59,19 @@ USE: PUT _template/nginx
             }
           }
         },
+        "nginx" : {
+          "dynamic" : true,
+          "properties" : {
+            "access" : {
+              "dynamic" : true,
+              "properties" : {
+                "response_code" : {
+                  "type" : "integer"
+                }
+              }
+            }
+          }
+        },
         "@version" : {
           "type" : "keyword"
         },
@@ -69,4 +81,4 @@ USE: PUT _template/nginx
       }
     },
     "aliases" : { }
-}
+  }
