@@ -56,4 +56,5 @@ PUT _template/authorization
       }
     },
     "aliases" : { }
+  }
 }
