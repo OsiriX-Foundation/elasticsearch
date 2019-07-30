@@ -1,366 +1,72 @@
+PUT _rollup/job/rollup_docker
 {
-  "rollup_docker" : {
-    "aliases" : { },
-    "mappings" : {
-      "_meta" : {
-        "_rollup" : {
-          "rollup_docker" : {
-            "cron" : "0 0 * * * ?",
-            "rollup_index" : "rollup_docker",
-            "groups" : {
-              "date_histogram" : {
-                "delay" : "1h",
-                "field" : "@timestamp",
-                "interval" : "10m",
-                "time_zone" : "Europe/Zurich"
-              },
-              "terms" : {
-                "fields" : [
-                  "fields.instance.keyword",
-                  "container.image.full_name.keyword"
-                ]
-              }
-            },
-            "id" : "rollup_docker",
-            "metrics" : [
-              {
-                "field" : "docker.cpu.total.pct",
-                "metrics" : [
-                  "avg",
-                  "max",
-                  "min"
-                ]
-              },
-              {
-                "field" : "docker.diskio.total",
-                "metrics" : [
-                  "max",
-                  "avg",
-                  "min"
-                ]
-              },
-              {
-                "field" : "docker.info.containers.running",
-                "metrics" : [
-                  "min",
-                  "max"
-                ]
-              },
-              {
-                "field" : "docker.info.containers.stopped",
-                "metrics" : [
-                  "max",
-                  "min"
-                ]
-              },
-              {
-                "field" : "docker.network.out.bytes",
-                "metrics" : [
-                  "max"
-                ]
-              },
-              {
-                "field" : "docker.network.in.bytes",
-                "metrics" : [
-                  "max"
-                ]
-              },
-              {
-                "field" : "docker.memory.usage.total",
-                "metrics" : [
-                  "avg"
-                ]
-              }
-            ],
-            "index_pattern" : "docker-*",
-            "timeout" : "20s",
-            "page_size" : 1000
-          }
-        },
-        "rollup-version" : "7.0.0"
-      },
-      "dynamic_templates" : [
-        {
-          "strings" : {
-            "match_mapping_type" : "string",
-            "mapping" : {
-              "type" : "keyword"
-            }
-          }
-        },
-        {
-          "date_histograms" : {
-            "path_match" : "*.date_histogram.timestamp",
-            "mapping" : {
-              "type" : "date"
-            }
-          }
-        }
-      ],
-      "properties" : {
-        "@timestamp" : {
-          "properties" : {
-            "date_histogram" : {
-              "properties" : {
-                "_count" : {
-                  "type" : "long"
-                },
-                "interval" : {
-                  "type" : "keyword"
-                },
-                "time_zone" : {
-                  "type" : "keyword"
-                },
-                "timestamp" : {
-                  "type" : "date"
-                }
-              }
-            }
-          }
-        },
-        "_rollup" : {
-          "properties" : {
-            "id" : {
-              "type" : "keyword"
-            },
-            "version" : {
-              "type" : "long"
-            }
-          }
-        },
-        "container" : {
-          "properties" : {
-            "image" : {
-              "properties" : {
-                "full_name" : {
-                  "properties" : {
-                    "keyword" : {
-                      "properties" : {
-                        "terms" : {
-                          "properties" : {
-                            "_count" : {
-                              "type" : "long"
-                            },
-                            "value" : {
-                              "type" : "keyword"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "docker" : {
-          "properties" : {
-            "cpu" : {
-              "properties" : {
-                "total" : {
-                  "properties" : {
-                    "pct" : {
-                      "properties" : {
-                        "avg" : {
-                          "properties" : {
-                            "_count" : {
-                              "type" : "float"
-                            },
-                            "value" : {
-                              "type" : "float"
-                            }
-                          }
-                        },
-                        "max" : {
-                          "properties" : {
-                            "value" : {
-                              "type" : "float"
-                            }
-                          }
-                        },
-                        "min" : {
-                          "properties" : {
-                            "value" : {
-                              "type" : "float"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "diskio" : {
-              "properties" : {
-                "total" : {
-                  "properties" : {
-                    "avg" : {
-                      "properties" : {
-                        "_count" : {
-                          "type" : "float"
-                        },
-                        "value" : {
-                          "type" : "float"
-                        }
-                      }
-                    },
-                    "max" : {
-                      "properties" : {
-                        "value" : {
-                          "type" : "float"
-                        }
-                      }
-                    },
-                    "min" : {
-                      "properties" : {
-                        "value" : {
-                          "type" : "float"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "info" : {
-              "properties" : {
-                "containers" : {
-                  "properties" : {
-                    "running" : {
-                      "properties" : {
-                        "max" : {
-                          "properties" : {
-                            "value" : {
-                              "type" : "float"
-                            }
-                          }
-                        },
-                        "min" : {
-                          "properties" : {
-                            "value" : {
-                              "type" : "float"
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "stopped" : {
-                      "properties" : {
-                        "max" : {
-                          "properties" : {
-                            "value" : {
-                              "type" : "float"
-                            }
-                          }
-                        },
-                        "min" : {
-                          "properties" : {
-                            "value" : {
-                              "type" : "float"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "memory" : {
-              "properties" : {
-                "usage" : {
-                  "properties" : {
-                    "total" : {
-                      "properties" : {
-                        "avg" : {
-                          "properties" : {
-                            "_count" : {
-                              "type" : "float"
-                            },
-                            "value" : {
-                              "type" : "float"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "network" : {
-              "properties" : {
-                "in" : {
-                  "properties" : {
-                    "bytes" : {
-                      "properties" : {
-                        "max" : {
-                          "properties" : {
-                            "value" : {
-                              "type" : "float"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "out" : {
-                  "properties" : {
-                    "bytes" : {
-                      "properties" : {
-                        "max" : {
-                          "properties" : {
-                            "value" : {
-                              "type" : "float"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "fields" : {
-          "properties" : {
-            "instance" : {
-              "properties" : {
-                "keyword" : {
-                  "properties" : {
-                    "terms" : {
-                      "properties" : {
-                        "_count" : {
-                          "type" : "long"
-                        },
-                        "value" : {
-                          "type" : "keyword"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+  "index_pattern": "docker-*",
+  "rollup_index": "rollup_docker2",
+  "cron": "0 0 * * * ?",
+  "page_size": 1000,
+  "groups": {
+    "date_histogram": {
+      "interval": "10m",
+      "time_zone": "Europe/Zurich",
+      "field": "@timestamp"
     },
-    "settings" : {
-      "index" : {
-        "creation_date" : "1562651815747",
-        "number_of_shards" : "1",
-        "number_of_replicas" : "1",
-        "uuid" : "SuhorIsrT1aclvvgPzwfRw",
-        "version" : {
-          "created" : "7000099"
-        },
-        "provided_name" : "rollup_docker"
-      }
+    "terms": {
+      "fields": [
+        "fields.instance.keyword",
+        "container.image.full_name.keyword"
+      ]
     }
-  }
+  },
+  "metrics": [
+    {
+      "field": "docker.cpu.total.pct",
+      "metrics": [
+        "avg",
+        "max",
+        "min"
+      ]
+    },
+    {
+      "field": "docker.diskio.total",
+      "metrics": [
+        "avg",
+        "max",
+        "min"
+      ]
+    },
+    {
+      "field": "docker.memory.usage.total",
+      "metrics": [
+        "avg",
+        "max",
+        "min"
+      ]
+    },
+    {
+      "field": "docker.info.containers.running",
+      "metrics": [
+        "max",
+        "min"
+      ]
+    },
+    {
+      "field": "docker.info.containers.stopped",
+      "metrics": [
+        "max",
+        "min"
+      ]
+    },
+    {
+      "field": "docker.network.out.bytes",
+      "metrics": [
+        "max"
+      ]
+    },
+    {
+      "field": "docker.network.in.bytes",
+      "metrics": [
+        "max"
+      ]
+    }
+  ]
 }
