@@ -70,3 +70,5 @@ PUT _rollup/job/rollup_docker
     }
   ]
 }
+
+POST _rollup/job/rollup_docker/_start
