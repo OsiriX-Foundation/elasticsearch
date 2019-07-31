@@ -2,7 +2,7 @@ PUT _rollup/job/rollup_job_kheops_metrics
 {
     "index_pattern": "kheopsmetrics-*",
     "rollup_index": "rollup_job_kheopsmetrics",
-    "cron": "0 16 0 * * ?",
+    "cron": "0 16 * * * ?",
     "groups": {
       "date_histogram": {
         "interval": "1h",
