@@ -167,7 +167,6 @@ PUT _rollup/job/rollup_job_kheops_metrics
     ],
     "timeout": "20s",
     "page_size": 1000
-  }
 }
 
 POST _rollup/job/rollup_job_kheops_metrics/_start
