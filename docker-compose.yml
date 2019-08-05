@@ -43,13 +43,14 @@ services:
       - LS_JAVA_OPTS=-Xmx3g      
     
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+    image: my_elasticsearch
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
     volumes:
       - esdata01:/usr/share/elasticsearch/data
       - /home/ansible/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - /medirad8_archive:/backup
     ports:
       - "9200:9200"
       - "9300:9300"
