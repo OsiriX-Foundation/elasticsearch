@@ -15,5 +15,4 @@ PUT _template/docker
     },
     "mappings" : { },
     "aliases" : { }
-  }
 }
