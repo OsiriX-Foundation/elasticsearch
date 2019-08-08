@@ -1,0 +1,17 @@
+PUT _template/system
+{
+    "order" : 0,
+    "index_patterns" : [
+      "system-metric-*"
+    ],
+    "settings" : {
+      "index" : {
+        "lifecycle" : {
+          "name" : "system-metrics-7d"
+        },
+        "refresh_interval" : "5s"
+      }
+    },
+    "mappings" : { },
+    "aliases" : { }
+}
