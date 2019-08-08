@@ -7,7 +7,7 @@ PUT _template/docker
     "settings" : {
       "index" : {
         "lifecycle" : {
-          "name" : "docker_log_7d",
+          "name" : "docker_metrics_7d",
           "rollover_alias" : "docker"
         },
         "refresh_interval" : "5s"
