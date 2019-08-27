@@ -1,19 +1,17 @@
-PUT _template/docker
+PUT _template/system
 {
     "order" : 0,
     "index_patterns" : [
-      "docker-*"
+      "system-metric-*"
     ],
     "settings" : {
       "index" : {
         "lifecycle" : {
-          "name" : "docker_log_7d",
-          "rollover_alias" : "docker"
+          "name" : "system-metrics-7d"
         },
         "refresh_interval" : "5s"
       }
     },
     "mappings" : { },
     "aliases" : { }
-  }
 }
