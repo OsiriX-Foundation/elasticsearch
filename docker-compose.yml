@@ -24,6 +24,8 @@ services:
     extra_hosts:
       - "kibana.kheops.online:127.0.0.1"
     restart: on-failure
+    networks:
+      - kibana_network
   
   kibana:
     image: docker.elastic.co/kibana/kibana:7.0.0
@@ -33,6 +35,8 @@ services:
     ports:
       - "5601:5601"
     restart: on-failure
+    networks:
+      - kibana_network
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.0.0
@@ -43,7 +47,9 @@ services:
       - /home/ansible/elasticsearch/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     environment:
       - LS_JAVA_OPTS=-Xmx3g      
-    restart: on-failure    
+    restart: on-failure   
+    networks:
+      - kibana_network
 
   elasticsearch:
     image: my_elasticsearch
@@ -58,6 +64,8 @@ services:
       - "9200:9200"
       - "9300:9300"
     restart: on-failure
+    networks:
+      - kibana_network
 
 #  elastalert:
 #    image: bitsensor/elastalert:3.0.0-beta.0
@@ -78,7 +86,14 @@ services:
 volumes:
   esdata01:
     driver: local
-      
+    
+networks:
+  kibana_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.241.0/24"  
       
 secrets:
   pwd:
