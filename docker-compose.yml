@@ -6,8 +6,6 @@ services:
     image: osirixfoundation/elasticsearch-reverse-proxy:latest
     container_name: reverseproxy
     secrets:
-      - privkey1.pem
-      - fullchain1.pem
       - pwd
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -83,9 +81,5 @@ volumes:
       
       
 secrets:
-  privkey1.pem:
-    file: privkey1.pem
-  fullchain1.pem:
-    file: fullchain1.pem
   pwd:
     file: pwd
