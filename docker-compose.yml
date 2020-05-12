@@ -16,13 +16,13 @@ services:
       - "443:443"
     environment:
       - KHEOPS_ROOT_SCHEME=https
-      - KHEOPS_ROOT_HOST=kibana.kheops.online
-      - KHEOPS_ROOT_URL=https://kibana.kheops.online
+      - KHEOPS_ROOT_HOST=kibana2.kheops.online
+      - KHEOPS_ROOT_URL=https://kibana2.kheops.online
     depends_on:
       - elasticsearch
       - kibana
     extra_hosts:
-      - "kibana.kheops.online:127.0.0.1"
+      - "kibana2.kheops.online:127.0.0.1"
     restart: on-failure
     networks:
       - kibana_network
@@ -44,7 +44,7 @@ services:
     ports:
       - "5044:5044"
     volumes: 
-      - /home/ansible/elasticsearch/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     environment:
       - LS_JAVA_OPTS=-Xmx3g      
     restart: on-failure   
@@ -58,7 +58,7 @@ services:
       - discovery.type=single-node
     volumes:
       - esdata01:/usr/share/elasticsearch/data
-      - /home/ansible/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - /medirad8_archive:/backup
     ports:
       - "9200:9200"
