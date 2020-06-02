@@ -1,0 +1,41 @@
+name: instance up
+
+index: system-metrics-*
+timestamp_field: "@timestamp"
+
+
+#type: new_term
+#fields: fields.instance
+#terms_windows_size:
+#  minutes: 1
+
+type: spike
+spike_height: 2
+spike_type: up
+timeframe:
+  minutes: 1
+
+realert:
+  seconds: 1 
+
+filter:
+- term:
+    metricset.name: uptime
+- term:
+    fields.instance: test
+
+include:
+  - fields.instance
+  - "@timestamp"
+
+alert_text_type: alert_text_only
+alert_text: "_{}_  {} is up"
+alert_text_args:
+  - "@timestamp"
+  - fields.instance
+
+alert:
+  - slack
+slack_webhook_url: "https://hooks.slack.com/services/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"
+slack_emoji_override: ":smiley:"
+slack_msg_color: warning

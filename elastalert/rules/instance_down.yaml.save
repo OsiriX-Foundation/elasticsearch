@@ -1,0 +1,31 @@
+name: instance down
+
+index: system-metrics-*
+timestamp_field: "@timestamp"
+
+
+type: any
+realert:
+  seconds: 0
+
+filter:
+- query:
+    query_string:
+      query: "kheops.action.keyword:NEW_USER"
+
+include:
+  - fields.instance
+  - "@timestamp"
+  - kheops.user
+
+alert_text_type: alert_text_only
+alert_text: "_{}_ user: {} on {}"
+alert_text_args:
+  - "@timestamp"
+  - kheops.user
+  - fields.instance
+
+
+alert:
+  - slack
+slack_webhook_url: "https://hooks.slack.com/services/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" 

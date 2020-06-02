@@ -3,7 +3,7 @@ version: '3.1'
 services:
 
   reverse-proxy:
-    image: osirixfoundation/elasticsearch-reverse-proxy:certbot
+    image: osirixfoundation/elasticsearch-reverse-proxy:certbot2
     container_name: reverseproxy
     secrets:
       - pwd
@@ -28,7 +28,7 @@ services:
       - kibana_network
   
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.0.0
+    image: docker.elastic.co/kibana/kibana:7.7.0
     container_name: kibana
     volumes:
       - /home/ansible/elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml
@@ -39,7 +39,7 @@ services:
       - kibana_network
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.0.0
+    image: docker.elastic.co/logstash/logstash:7.7.0
     container_name: logstash
     ports:
       - "5044:5044"
@@ -52,14 +52,14 @@ services:
       - kibana_network
 
   elasticsearch:
-    image: my_elasticsearch
+    image: my_elasticsearch:7.7.0
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
     volumes:
       - esdata01:/usr/share/elasticsearch/data
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - /medirad8_archive:/backup
+      - /medirad15_archive:/backup
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -67,21 +67,22 @@ services:
     networks:
       - kibana_network
 
-#  elastalert:
-#    image: bitsensor/elastalert:3.0.0-beta.0
-#    container_name: elastalert
-#    volumes:
-#      - ./elastalert/config/elastalert.yaml:/opt/elastalert/config.yaml
-#      - ./elastalert/config/elastalert-test.yaml:/opt/elastalert/config-test.yaml
-#      - ./elastalert/config/config.json:/opt/elastalert-server/config/config.json
-#      - ./elastalert/rules:/opt/elastalert/rules
-#      - ./elastalert/rule_templates:/opt/elastalert/rule_templates
-#    ports:
-#      - "3030:3030"
-#      - "3333:3333"
-#    depends_on:
-#      - elasticsearch
-#      - kibana
+  elastalert:
+    image: bitsensor/elastalert:3.0.0-beta.1
+    container_name: elastalert
+    volumes:
+      - ./elastalert/config/elastalert.yaml:/opt/elastalert/config.yaml
+      - ./elastalert/config/config.json:/opt/elastalert-server/config/config.json
+      - ./elastalert/rules:/opt/elastalert/rules
+    ports:
+      - "3030:3030"
+      - "3333:3333"
+    depends_on:
+      - elasticsearch
+      - kibana
+    networks:
+      - kibana_network
+
   
 volumes:
   esdata01:
