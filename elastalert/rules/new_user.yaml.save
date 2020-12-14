@@ -1,0 +1,33 @@
+name: new user
+
+index: kheopsauthorization-*
+timestamp_field: "@timestamp"
+
+
+type: any
+realert:
+  seconds: 0
+
+filter:
+- query:
+    query_string:
+      query: "kheops.action.keyword:NEW_USER AND NOT fields.instance:test AND NOT fields.instance:test2 AND NOT fields.instance:demo"
+
+include:
+  - fields.instance
+  - "@timestamp"
+  - kheops.user
+
+alert_text_type: alert_text_only
+alert_text: "_{}_ user: {} on {}"
+alert_text_args:
+  - "@timestamp"
+  - kheops.user
+  - fields.instance
+
+
+alert:
+  - slack
+slack_webhook_url: "https://hooks.slack.com/services/xxx/xxx/xxx"
+slack_msg_color: good
+slack_emoji_override: ":beer:"

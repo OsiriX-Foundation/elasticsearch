@@ -4,28 +4,57 @@ index: system-metrics-*
 timestamp_field: "@timestamp"
 
 
-type: any
+type: cardinality
+
+cardinality_field: "_id"
+min_cardinality: 2 
+query_key: fields.instance
+timeframe:
+#  seconds: 60
+  hours: 3
 realert:
-  seconds: 0
+  seconds: 1 
+#exponential_realert:
+#  minutes: 1
+
+#type: flatline
+#threshold: 5
+#timeframe:
+#  seconds: 60
+#use_terms_query: true
+#query_key: fields.instance
+#doc_type: datapoint
+
+
+#type: any
+#realert:
+#  seconds: 15
 
 filter:
-- query:
-    query_string:
-      query: "kheops.action.keyword:NEW_USER"
+#- query:
+#    query_string:
+#      query: "metricset.name:uptime and fields.instance:test"
+- term:
+    metricset.name: uptime
+#- term:
+#    fields.instance: test
+#- and:
+#- term:
+#  metricset.name: "uptime"
+#- term:
+#  fields.instance: "test"
 
 include:
   - fields.instance
   - "@timestamp"
-  - kheops.user
 
 alert_text_type: alert_text_only
-alert_text: "_{}_ user: {} on {}"
+alert_text: "_{}_  {} is down or very slow"
 alert_text_args:
   - "@timestamp"
-  - kheops.user
   - fields.instance
-
 
 alert:
   - slack
-slack_webhook_url: "https://hooks.slack.com/services/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" 
+slack_webhook_url: "https://hooks.slack.com/services/xxx/xxx/xxx"
+slack_emoji_override: ":rage:"
