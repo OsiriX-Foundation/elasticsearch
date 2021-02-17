@@ -4,5 +4,7 @@ server.name: kibana
 server.host: "0"
 elasticsearch.hosts: http://elasticsearch:9200
 
+kibana.autocompleteTimeout: "10000"
+
 #elastalert-kibana-plugin.serverHost: elastalert
 #elastalert-kibana-plugin.serverPort: 3030
