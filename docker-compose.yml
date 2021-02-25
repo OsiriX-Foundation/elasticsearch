@@ -28,7 +28,7 @@ services:
       - kibana_network
   
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.10.0
+    image: docker.elastic.co/kibana/kibana:7.11.0
     container_name: kibana
     volumes:
       - /home/ansible/elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml
@@ -39,7 +39,7 @@ services:
       - kibana_network
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.10.0
+    image: docker.elastic.co/logstash/logstash:7.11.0
     container_name: logstash
     ports:
       - "5044:5044"
@@ -52,7 +52,7 @@ services:
       - kibana_network
 
   elasticsearch:
-    image: my_elasticsearch:7.10.0
+    image: my_elasticsearch:7.11.0
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
