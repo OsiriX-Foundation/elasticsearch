@@ -17,12 +17,13 @@ services:
       - "443:443"
     environment:
       - KHEOPS_ROOT_SCHEME=https
-      - KHEOPS_ROOT_HOST=kibana.kheops.online
+      - KHEOPS_ROOT_HOST=medirad-kibana.kheops.online
     depends_on:
       - elasticsearch
       - kibana
     extra_hosts:
-      - "kibana.kheops.online:127.0.0.1"
+      - "medirad-kibana.kheops.online:127.0.0.1"
+    restart: on-failure 
   
   kibana:
     image: docker.elastic.co/kibana/kibana:7.0.0
@@ -31,6 +32,7 @@ services:
       - /home/ansible/elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - "5601:5601"
+    restart: on-failure 
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.0.0
@@ -40,7 +42,8 @@ services:
     volumes: 
       - /home/ansible/elasticsearch/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     environment:
-      - LS_JAVA_OPTS=-Xmx3g      
+      - LS_JAVA_OPTS=-Xmx3g 
+    restart: on-failure      
     
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
@@ -53,22 +56,8 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+    restart: on-failure 
 
-  elastalert:
-    image: bitsensor/elastalert:3.0.0-beta.0
-    container_name: elastalert
-    volumes:
-      - ./elastalert/config/elastalert.yaml:/opt/elastalert/config.yaml
-      - ./elastalert/config/elastalert-test.yaml:/opt/elastalert/config-test.yaml
-      - ./elastalert/config/config.json:/opt/elastalert-server/config/config.json
-      - ./elastalert/rules:/opt/elastalert/rules
-      - ./elastalert/rule_templates:/opt/elastalert/rule_templates
-    ports:
-      - "3030:3030"
-      - "3333:3333"
-    depends_on:
-      - elasticsearch
-      - kibana
   
 volumes:
   esdata01:
