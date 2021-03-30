@@ -20,6 +20,8 @@ services:
       - kibana
     extra_hosts:
       - "medirad-kibana.kheops.online:127.0.0.1"
+    networks:
+      - main_network
   
   kibana:
     image: docker.elastic.co/kibana/kibana:7.0.0
@@ -28,6 +30,8 @@ services:
       - /home/ansible/elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - "5601:5601"
+    networks:
+      - main_network
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.0.0
@@ -37,7 +41,9 @@ services:
     volumes: 
       - /home/ansible/elasticsearch/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     environment:
-      - LS_JAVA_OPTS=-Xmx3g      
+      - LS_JAVA_OPTS=-Xmx3g     
+    networks:
+      - main_network
     
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
@@ -50,7 +56,16 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+    networks:
+      - main_network
 
+networks:
+  main_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.241.0/24"
   
 volumes:
   esdata01:
