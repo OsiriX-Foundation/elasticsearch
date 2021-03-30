@@ -6,24 +6,20 @@ services:
     image: osirixfoundation/elasticsearch-reverse-proxy:latest
     container_name: reverseproxy
     secrets:
-      - privkey1.pem
-      - fullchain1.pem
       - pwd
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /usr/share/zoneinfo/Europe/Zurich:/etc/timezone:ro
     ports:
-      - "80:80"
-      - "443:443"
+      - "8081:80"
     environment:
-      - KHEOPS_ROOT_SCHEME=https
-      - KHEOPS_ROOT_HOST=medirad-kibana.kheops.online
+      - NGINX_ROOT_SCHEME=https
+      - NGINX_ROOT_HOST=medirad-kibana.kheops.online
     depends_on:
       - elasticsearch
       - kibana
     extra_hosts:
       - "medirad-kibana.kheops.online:127.0.0.1"
-    restart: on-failure 
   
   kibana:
     image: docker.elastic.co/kibana/kibana:7.0.0
@@ -32,7 +28,6 @@ services:
       - /home/ansible/elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - "5601:5601"
-    restart: on-failure 
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.0.0
@@ -42,8 +37,7 @@ services:
     volumes: 
       - /home/ansible/elasticsearch/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     environment:
-      - LS_JAVA_OPTS=-Xmx3g 
-    restart: on-failure      
+      - LS_JAVA_OPTS=-Xmx3g      
     
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
@@ -56,18 +50,12 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
-    restart: on-failure 
 
   
 volumes:
   esdata01:
     driver: local
-      
-      
+           
 secrets:
-  privkey1.pem:
-    file: privkey1.pem
-  fullchain1.pem:
-    file: fullchain1.pem
   pwd:
     file: pwd
