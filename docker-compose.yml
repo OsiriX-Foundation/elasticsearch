@@ -3,29 +3,26 @@ version: '3.1'
 services:
 
   reverse-proxy:
-    image: osirixfoundation/elasticsearch-reverse-proxy:certbot3
+    image: osirixfoundation/elasticsearch-reverse-proxy:unsecure
     container_name: reverseproxy
     secrets:
       - pwd
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /usr/share/zoneinfo/Europe/Zurich:/etc/timezone:ro
-      - ./letsencrypt:/etc/letsencrypt
     ports:
-      - "80:80"
-      - "443:443"
+      - "8081:80"
     environment:
       - NGINX_ROOT_SCHEME=https
-      - NGINX_ROOT_HOST=kibana2.kheops.online
-      - NGINX_ROOT_URL=https://kibana2.kheops.online
-
+      - NGINX_ROOT_HOST=kibana.kheops.online
     depends_on:
       - elasticsearch
       - kibana
     extra_hosts:
-      - "kibana2.kheops.online:127.0.0.1"
+      - "kibana.kheops.online:127.0.0.1"
     networks:
       - kibana_network
+    restart: always
   
   kibana:
     image: docker.elastic.co/kibana/kibana:7.11.0
@@ -37,6 +34,7 @@ services:
     restart: on-failure
     networks:
       - kibana_network
+    restart: always
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.11.0
@@ -47,7 +45,7 @@ services:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     environment:
       - LS_JAVA_OPTS=-Xmx3g      
-    restart: on-failure   
+    restart: always   
     networks:
       - kibana_network
 
@@ -63,7 +61,7 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
-    restart: on-failure
+    restart: always
     networks:
       - kibana_network
 
@@ -82,8 +80,7 @@ services:
       - kibana
     networks:
       - kibana_network
-    restart: on-failure
-
+    restart: always
   
 volumes:
   esdata01:
