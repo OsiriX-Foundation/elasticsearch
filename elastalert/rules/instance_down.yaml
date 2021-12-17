@@ -11,7 +11,7 @@ min_cardinality: 2
 query_key: fields.instance
 timeframe:
 #  seconds: 60
-  hours: 1
+  hours: 3
 realert:
   seconds: 1 
 #exponential_realert:
@@ -56,5 +56,5 @@ alert_text_args:
 
 alert:
   - slack
-slack_webhook_url: "https://hooks.slack.com/services/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"
+slack_webhook_url: "https://hooks.slack.com/services/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"
 slack_emoji_override: ":rage:"
