@@ -31,6 +31,8 @@ services:
       - /home/ansible/elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - "5601:5601"
+    environment:
+      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
     restart: on-failure
     networks:
       - kibana_network
@@ -44,7 +46,8 @@ services:
     volumes: 
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     environment:
-      - LS_JAVA_OPTS=-Xmx3g      
+      - LS_JAVA_OPTS=-Xmx3g     
+      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
     restart: always   
     networks:
       - kibana_network
@@ -54,6 +57,7 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
+      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
     volumes:
       - esdata01:/usr/share/elasticsearch/data
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
@@ -75,6 +79,8 @@ services:
     ports:
       - "3030:3030"
       - "3333:3333"
+    environment:
+      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
     depends_on:
       - elasticsearch
       - kibana
