@@ -3,8 +3,11 @@ version: '3.1'
 services:
 
   reverse-proxy:
-    image: osirixfoundation/elasticsearch-reverse-proxy:unsecure
+    #image: osirixfoundation/elasticsearch-reverse-proxy:unsecure
+    image: elasticsearch-reverse-proxy:unsecure
     container_name: reverseproxy
+    build:
+      context: ./reverse_proxy_unsecure 
     secrets:
       - pwd
     volumes:
@@ -25,21 +28,20 @@ services:
     restart: always
   
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.16.1
+    image: docker.elastic.co/kibana/kibana:7.17.0
     container_name: kibana
     volumes:
       - /home/ansible/elasticsearch/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - "5601:5601"
-    environment:
-      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
+    #environment:
     restart: on-failure
     networks:
       - kibana_network
     restart: always
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.16.1
+    image: docker.elastic.co/logstash/logstash:7.17.0
     container_name: logstash
     ports:
       - "5044:5044"
@@ -47,17 +49,17 @@ services:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     environment:
       - LS_JAVA_OPTS=-Xmx3g     
-      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
     restart: always   
     networks:
       - kibana_network
 
   elasticsearch:
-    image: my_elasticsearch:7.16.1
+    image: my_elasticsearch:7.17.0
     container_name: elasticsearch
+    build:
+      context: ./my_elasticsearch
     environment:
       - discovery.type=single-node
-      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
     volumes:
       - esdata01:/usr/share/elasticsearch/data
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
@@ -79,8 +81,7 @@ services:
     ports:
       - "3030:3030"
       - "3333:3333"
-    environment:
-      - LOG4J_FORMAT_MSG_NO_LOOKUPS=true
+    #environment:
     depends_on:
       - elasticsearch
       - kibana
