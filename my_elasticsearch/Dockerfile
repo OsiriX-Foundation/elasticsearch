@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:7.16.1
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.17.0
 
 RUN groupadd -g 1010 archive
 RUN usermod -a -G archive elasticsearch
